@@ -72,7 +72,7 @@ export const productService = {
             throw error;
         }
 
-        const createdProduct = await productRepository.createProduct({
+        const createdProduct = await productRepository.create({
             title,
             code,
             price,
@@ -86,19 +86,11 @@ export const productService = {
     },
 
     updateProduct: async (id, updateProduct) => {
-        const { title, code, price, stock, status } = updateProduct;
+        const { title, code, description, price, stock, category } = updateProduct;
 
-        if(status && Object.values(PRODUCT_STATUS).includes(status)) {
-            const error = new Error("status tiene un valor inválido");
-            error.statusCode = 400;
-            throw error;
-        }
+        const status = stock !== undefined && stock > 0 ? PRODUCT_STATUS.AVAILABLE : PRODUCT_STATUS.OUT_OF_STOCK;        
 
-        if (stock !== undefined) {
-            status = stock > 0 ? PRODUCT_STATUS.AVAILABLE : PRODUCT_STATUS.OUT_OF_STOCK;
-        }
-
-        const product = await productRepository.update(id, { title, code, price, stock, status });
+        const product = await productRepository.update(id, { title, code, description, price, stock, category, status });
 
         if(!product) {
             const error = new Error("Producto no encontrado");
@@ -110,7 +102,7 @@ export const productService = {
     },
 
     deleteProduct: async (id) => {
-        const product = await productRepository.deleteProduct(id);
+        const product = await productRepository.delete(id);
 
         if(!product) {
             const error = new Error("Producto no encontrado");

@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const requiredEnvVars = [
+    "NODE_ENV",
+    "PORT",
     "MONGODB_URI",
     "JWT_SECRET",
     "SHIPPING_API_KEY"

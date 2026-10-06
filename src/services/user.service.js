@@ -20,7 +20,7 @@ export const userService = {
     },
 
     createUser: async (newUser) => {
-        const { firstName, lastName, email, password, role = "user" } = newUser;
+        const { firstName, lastName, email, password, role = USER_ROLES.USER } = newUser;
 
         if (!firstName || !lastName || !email || !password) {
             const error = new Error("Faltan campos obligatorios");
