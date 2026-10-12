@@ -1,46 +1,46 @@
-import { userService } from "../services/user.service.js";
+import { userService } from '../services/user.service.js';
 
-export const getUsers = async (req, res) => {
+export const getUsers = async (req, res, next) => {
     try {
-        const users = await userService.getUsers();        
-        res.status(200).json(users);
+        const users = await userService.getUsers();
+        res.json({ status: 'success', payload: users });
     } catch (error) {
-        res.status(error.statusCode || 500).send(error.message || 'Error del servidor');
+        next(error);
     }
-}
+};
 
-export const getUserById = async (req, res) => {
+export const getUserById = async (req, res, next) => {
     try {
-        const user = await userService.getUserById(req.params.id);        
-        res.status(200).json(user);
+        const user = await userService.getUserById(req.params.id);
+        res.json({ status: 'success', payload: user });
     } catch (error) {
-        res.status(error.statusCode || 500).send(error.message || 'Error del servidor');
+        next(error);
     }
-}
+};
 
-export const createUser = async (req, res) => {
+export const createUser = async (req, res, next) => {
     try {
-        const user = await userService.createUser(req.body);        
-        res.status(201).json(user);
+        const user = await userService.createUser(req.body);
+        res.status(201).json({ status: 'success', payload: user });
     } catch (error) {
-        res.status(error.statusCode || 500).send(error.message || 'Error del servidor');
+        next(error);
     }
-}
+};
 
-export const updateUser = async (req, res) => {
+export const updateUser = async (req, res, next) => {
     try {
-        const user = await userService.updateUser(req.params.id, req.body);        
-        res.status(200).json(user);
+        const user = await userService.updateUser(req.params.id, req.body);
+        res.json({ status: 'success', payload: user });
     } catch (error) {
-        res.status(error.statusCode || 500).send(error.message || 'Error del servidor');
+        next(error);
     }
-}
+};
 
-export const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res, next) => {
     try {
-        const user = await userService.deleteUser(req.params.id);        
-        res.status(200).json(user);
+        await userService.deleteUser(req.params.id);
+        res.json({ status: 'success', message: 'Usuario eliminado' });
     } catch (error) {
-        res.status(error.statusCode || 500).send(error.message || 'Error del servidor');
+        next(error);
     }
-}
+};

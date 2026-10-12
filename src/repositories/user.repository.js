@@ -2,28 +2,31 @@ import User from "../models/user.model.js";
 
 export const userRepository = {
 
-    getAll: async () => {
-        return await User.find();
+    getAll: (filter = {}) => {
+        return User.find(filter);
     },
 
-    getById: async (id) => {
-        return await User.findById(id);
+    getById: (id) => {
+        return User.findById(id);
     },
 
-    getByEmail: async (email) => {
-        return await User.findOne({ email })
+    getByEmail: (email) => {
+        return User.findOne({ email });
     },
 
-    create: async (newUser) => {
-        return await User.create(newUser);
+    create: (newUser) => {
+        return User.create(newUser);
     },
 
-    update: async (id, updateUser) => {
-        return await User.findByIdAndUpdate(id, updateUser, { new: true })
+    update: (id, updates) => {
+        return User.findByIdAndUpdate(id, updates, { new: true });
     },
 
-    delete: async (id) => {
-        return await User.findByIdAndDelete(id);
+    delete: (id) => {
+        return User.findByIdAndDelete(id);
+    },
+
+    insertMany: (users) =>{
+        return User.insertMany(users);
     }
-
 }

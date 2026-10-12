@@ -126,20 +126,66 @@ Esto evita utilizar strings directamente en diferentes partes de la aplicación 
 
 ## Endpoints
 
-| Método | Ruta                              | Descripción                                                          |
-| ------ | --------------------------------- | -------------------------------------------------------------------- |
-| GET    | `/api/health`                     | Health check                                                         |
-| GET    | `/api/users`                      | Listar usuarios                                                      |
-| POST   | `/api/users`                      | Crear usuario                                                        |
-| GET    | `/api/users/:id`                  | Obtener usuario                                                      |
-| PUT    | `/api/users/:id`                  | Actualizar usuario                                                   |
-| DELETE | `/api/users/:id`                  | Eliminar usuario                                                     |
-| GET    | `/api/products`                   | Listar productos con stock (`?all=true` incluye productos sin stock) |
-| POST   | `/api/products`                   | Crear producto                                                       |
-| GET    | `/api/products/:id`               | Obtener producto                                                     |
-| PUT    | `/api/products/:id`               | Actualizar producto                                                  |
-| DELETE | `/api/products/:id`               | Eliminar producto                                                    |
-| GET    | `/api/products/:id/shipping-cost` | Cotizar el envío de un producto                                      |
+| Método | Ruta                  | Descripción        |
+| ------ | --------------------- | ------------------ |
+| GET    | `/api/health`         | Health check       |
+| GET    | `/api/users`          | Listar usuarios    |
+| POST   | `/api/users`          | Crear usuario      |
+| GET    | `/api/users/:id`      | Obtener usuario    |
+| PUT    | `/api/users/:id`      | Actualizar usuario |
+| DELETE | `/api/users/:id`      | Eliminar usuario   |
+| GET    | `/api/orders`         | Listar ordenes     |
+| POST   | `/api/orders`         | Crear orden        |
+| GET    | `/api/orders/:id`     | Obtener orden      |
+| PUT    | `/api/orders/:id`     | Actualizar orden   |
+| DELETE | `/api/orders/:id`     | Eliminar orden     |
+| GET    | `/api/deliveries`     | Listar entregas    |
+| POST   | `/api/deliveries`     | Crear entrega      |
+| GET    | `/api/deliveries/:id` | Obtener entrega    |
+| PUT    | `/api/deliveries/:id` | Actualizar entrega |
+| DELETE | `/api/deliveries/:id` | Eliminar entrega   |
+
+### Mocks
+
+Herramientas de desarrollo para tener datos con los que probar la API. Los usuarios se generan con [Faker](https://fakerjs.dev/).
+
+| Método | Ruta                           | Descripción                                                             |
+| ------ | ------------------------------ | ----------------------------------------------------------------------- |
+| GET    | `/api/mocks/users?qty=10`      | Devuelve usuarios falsos. **No** los guarda                             |
+| GET    | `/api/mocks/orders?qty=10`     | Devuelve ordenes falsas. **No** los guarda                              |
+| GET    | `/api/mocks/deliveries?qty=10` | Devuelve entregas falsas. **No** los guarda                             |
+| POST   | `/api/mocks/seed?qty=10`       | Genera usuarios, ordenes y entregas falsas y los **inserta** en MongoDB |
+
+- `qty` llega por query string. En `seed` también se acepta en el body (`{ "qty": 10 }`); si vienen los dos, gana el query.
+- Sin `qty` se usan 10.
+- `qty` tiene que ser un entero entre 0 y 400. En `seed` tiene que ser mayor a 0, porque insertar 0 usuarios no tiene sentido.
+- Los usuarios generados son `customer` o `driver` (3 a 1, porque los pedidos necesitan clientes), nunca `admin`, y todos tienen la contraseña `coder123!`.
+- El email lleva un sufijo random para no chocar con el índice `unique`.
+- Las ordenes tienen de 1 a 3 items, en cada item la cantidad va de 1 a 5 y el precio de 10.0 a 100.0
+
+Respuesta de `POST /api/mocks/seed?qty=10`:
+
+```json
+{
+  "status": "success",
+  "payload": { "users": 10, "orders": 10, "deliveries": 10 }
+}
+```
+
+Errores (400):
+
+| Request                              | Mensaje                                           |
+| ------------------------------------ | ------------------------------------------------- |
+| `?qty=muchos`, `?qty=-1`, `?qty=2.5` | `qty debe ser un número entero mayor o igual a 0` |
+| `?qty=401`                           | `qty no puede superar 400`                        |
+| `POST /seed?qty=0`                   | `qty debe ser mayor a 0`                          |
+
+Todas las respuestas siguen el mismo formato:
+
+```json
+{ "status": "success", "payload": {} }
+{ "status": "error", "message": "Pedido no encontrado" }
+```
 
 ## Scripts
 
