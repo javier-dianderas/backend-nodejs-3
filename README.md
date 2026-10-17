@@ -126,35 +126,41 @@ Esto evita utilizar strings directamente en diferentes partes de la aplicación 
 
 ## Endpoints
 
-| Método | Ruta                  | Descripción        |
-| ------ | --------------------- | ------------------ |
-| GET    | `/api/health`         | Health check       |
-| GET    | `/api/users`          | Listar usuarios    |
-| POST   | `/api/users`          | Crear usuario      |
-| GET    | `/api/users/:id`      | Obtener usuario    |
-| PUT    | `/api/users/:id`      | Actualizar usuario |
-| DELETE | `/api/users/:id`      | Eliminar usuario   |
-| GET    | `/api/orders`         | Listar ordenes     |
-| POST   | `/api/orders`         | Crear orden        |
-| GET    | `/api/orders/:id`     | Obtener orden      |
-| PUT    | `/api/orders/:id`     | Actualizar orden   |
-| DELETE | `/api/orders/:id`     | Eliminar orden     |
-| GET    | `/api/deliveries`     | Listar entregas    |
-| POST   | `/api/deliveries`     | Crear entrega      |
-| GET    | `/api/deliveries/:id` | Obtener entrega    |
-| PUT    | `/api/deliveries/:id` | Actualizar entrega |
-| DELETE | `/api/deliveries/:id` | Eliminar entrega   |
+| Método | Ruta                  | Descripción         |
+| ------ | --------------------- | ------------------- |
+| GET    | `/api/health`         | Health check        |
+| GET    | `/api/users`          | Listar usuarios     |
+| POST   | `/api/users`          | Crear usuario       |
+| GET    | `/api/users/:id`      | Obtener usuario     |
+| PUT    | `/api/users/:id`      | Actualizar usuario  |
+| DELETE | `/api/users/:id`      | Eliminar usuario    |
+| GET    | `/api/orders`         | Listar ordenes      |
+| POST   | `/api/orders`         | Crear orden         |
+| GET    | `/api/orders/:id`     | Obtener orden       |
+| PUT    | `/api/orders/:id`     | Actualizar orden    |
+| DELETE | `/api/orders/:id`     | Eliminar orden      |
+| GET    | `/api/deliveries`     | Listar entregas     |
+| POST   | `/api/deliveries`     | Crear entrega       |
+| GET    | `/api/deliveries/:id` | Obtener entrega     |
+| PUT    | `/api/deliveries/:id` | Actualizar entrega  |
+| DELETE | `/api/deliveries/:id` | Eliminar entrega    |
+| GET    | `/api/stores`         | Listar comercios    |
+| POST   | `/api/stores`         | Crear comercio      |
+| GET    | `/api/stores/:id`     | Obtener comercio    |
+| PUT    | `/api/stores/:id`     | Actualizar comercio |
+| DELETE | `/api/stores/:id`     | Eliminar comercio   |
 
 ### Mocks
 
 Herramientas de desarrollo para tener datos con los que probar la API. Los usuarios se generan con [Faker](https://fakerjs.dev/).
 
-| Método | Ruta                           | Descripción                                                             |
-| ------ | ------------------------------ | ----------------------------------------------------------------------- |
-| GET    | `/api/mocks/users?qty=10`      | Devuelve usuarios falsos. **No** los guarda                             |
-| GET    | `/api/mocks/orders?qty=10`     | Devuelve ordenes falsas. **No** los guarda                              |
-| GET    | `/api/mocks/deliveries?qty=10` | Devuelve entregas falsas. **No** los guarda                             |
-| POST   | `/api/mocks/seed?qty=10`       | Genera usuarios, ordenes y entregas falsas y los **inserta** en MongoDB |
+| Método | Ruta                           | Descripción                                                                        |
+| ------ | ------------------------------ | ---------------------------------------------------------------------------------- |
+| GET    | `/api/mocks/users?qty=10`      | Devuelve usuarios falsos. **No** los guarda                                        |
+| GET    | `/api/mocks/orders?qty=10`     | Devuelve ordenes falsas. **No** los guarda                                         |
+| GET    | `/api/mocks/deliveries?qty=10` | Devuelve entregas falsas. **No** los guarda                                        |
+| GET    | `/api/mocks/stores?qty=10`     | Devuelve comercios falsos. **No** los guarda                                       |
+| POST   | `/api/mocks/seed?qty=10`       | Genera usuarios, ordenes, entregas y comercios falsos y los **inserta** en MongoDB |
 
 - `qty` llega por query string. En `seed` también se acepta en el body (`{ "qty": 10 }`); si vienen los dos, gana el query.
 - Sin `qty` se usan 10.
@@ -168,7 +174,7 @@ Respuesta de `POST /api/mocks/seed?qty=10`:
 ```json
 {
   "status": "success",
-  "payload": { "users": 10, "orders": 10, "deliveries": 10 }
+  "payload": { "users": 10, "orders": 10, "deliveries": 10, "stores": 10 }
 }
 ```
 
