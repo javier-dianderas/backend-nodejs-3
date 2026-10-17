@@ -18,7 +18,8 @@ export const generateMockUser = () =>{
         password,
         role : faker.helpers.weightedArrayElement([
             { weight: 3, value: USER_ROLES.CUSTOMER },
-            { weight: 1, value: USER_ROLES.DRIVER }
+            { weight: 1, value: USER_ROLES.DRIVER },
+            { weight: 1, value: USER_ROLES.STORE }
         ])
     }
 }

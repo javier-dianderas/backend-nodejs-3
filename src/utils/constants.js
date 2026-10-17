@@ -32,3 +32,6 @@ export const DOCUMENT_TYPES = Object.freeze({
     DRIVER_LICENSE: "driver_license",
     DELIVERY_PROOF: "delivery_proof"
 });
+
+export const MAX_MOCK_ITEMS = 400;
+export const DEFAULT_MOCK_ITEMS = 10;

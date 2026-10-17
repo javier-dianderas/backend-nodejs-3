@@ -1,13 +1,14 @@
 import { orderRepository } from '../repositories/order.repository.js';
 import { userRepository } from '../repositories/user.repository.js';
-import { AppError } from '../utils/errors.js';
 import { config } from '../config/index.js';
 import { ORDER_STATUS, DELIVERY_PRIORITY } from '../utils/constants.js';
+import { createError } from '../utils/apiResponse.js';
+import { ERROR_CODES } from '../utils/errorDictionary.js';
 
 // recibe todo por parámetro para poder testearla sin config ni DB
 export const calculateShippingCost = ({ isProduction, shipmentValue, apiKey }) => {
   if (!apiKey) {
-    throw new AppError('Configuración inválida: falta API Key', 500);
+    throw createError(ERROR_CODES.INVALID_ORDER_API_KEY);
   }
 
   if (isProduction) {
@@ -25,8 +26,8 @@ export const orderService = {
   getOrderById: async (id) => {
     const order = await orderRepository.getById(id);
 
-    if (!order) {
-      throw new AppError('Pedido no encontrado', 404);
+    if (!order) {      
+      throw createError(ERROR_CODES.ORDER_NOT_FOUND);
     }
 
     return order;
@@ -35,11 +36,11 @@ export const orderService = {
   createOrder: async (newOrder) => {
     const customer = await userRepository.getById(newOrder.customer);
     if (!customer) {
-      throw new AppError('El cliente especificado no existe', 400);
+      throw createError(ERROR_CODES.CUSTOMER_NOT_FOUND);
     }
 
     if (!newOrder.items || newOrder.items.length === 0) {
-      throw new AppError('El pedido debe tener al menos un item', 400);
+      throw createError(ERROR_CODES.ORDER_MUST_HAVE_ONE_ITEM);
     }
 
     const itemsTotal = newOrder.items.reduce(
@@ -67,7 +68,7 @@ export const orderService = {
     const order = await orderRepository.update(id, updates);
 
     if (!order) {
-      throw new AppError('Pedido no encontrado', 404);
+      throw createError(ERROR_CODES.ORDER_NOT_FOUND);
     }
 
     return order;
@@ -77,7 +78,7 @@ export const orderService = {
     const order = await orderRepository.delete(id);
 
     if (!order) {
-      throw new AppError('Pedido no encontrado', 404);
+      throw createError(ERROR_CODES.ORDER_NOT_FOUND);
     }
 
     return order;
