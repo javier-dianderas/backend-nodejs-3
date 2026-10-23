@@ -24,5 +24,6 @@ export const config = {
     isProd: process.env.NODE_ENV === "production",
     mongoDbUri: process.env.MONGODB_URI,
     jwtSecret: process.env.JWT_SECRET,
-    shippingApiKey: process.env.SHIPPING_API_KEY
+    shippingApiKey: process.env.SHIPPING_API_KEY,
+    loggerLevel: process.env.LOGGER_LEVEL
 }

@@ -1,6 +1,7 @@
 import app from "./app.js";
 import { connectDB } from "./config/db.js";
 import { config } from "./config/index.js";
+import logger from "./config/logger.js";
 
 const PORT = config.port;
 
@@ -8,12 +9,12 @@ const main = async () => {
   try {
     await connectDB();
 
-    app.listen(PORT, () => {
-      console.log("Servidor corriendo en puerto " + PORT);
+    app.listen(PORT, () => {      
+      logger.info(`Servidor corriendo en puerto ${PORT}`);
     })
   } catch (error) {
-    console.log("Error al inciar el servidor: " + error.message);
-    process.exit(1);
+    logger.fatal(`Error al inciar el servidor: ${error.message}`);
+    process.exitCode = 1;
   }
 }
 

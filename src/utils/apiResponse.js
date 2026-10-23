@@ -1,4 +1,3 @@
-import { json } from "express";
 import { ERROR_CODES, ERROR_DICTIONARY } from "./errorDictionary.js";
 
 export const successResponse = (res, { statusCode = 200, message = "", payload }) => {
