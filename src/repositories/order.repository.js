@@ -2,31 +2,31 @@ import Order from "../models/order.model.js";
 
 export const orderRepository = {
 
-  getAll: (filter = {}) => {
-    return Order.find(filter)
+  getAll: async (filter = {}) => {
+    return await Order.find(filter)
       .populate('customer', 'firstName lastName email')
       .populate('delivery');
   },
 
-  getById: (id) => {
-    return Order.findById(id)
+  getById: async (id) => {
+    return await Order.findById(id)
       .populate('customer', 'firstName lastName email')
       .populate('delivery');
   },
 
-  create: (newOrder) => {
-    return Order.create(newOrder);
+  create: async (newOrder) => {
+    return await Order.create(newOrder);
   },
 
-  update: (id, updates) => {
-    return Order.findByIdAndUpdate(id, updates, { new: true });
+  update: async (id, updates) => {
+    return await Order.findByIdAndUpdate(id, updates, { new: true });
   },
 
-  delete: (id) => {
-    return Order.findByIdAndDelete(id);
+  delete: async (id) => {
+    return await Order.findByIdAndDelete(id);
   },
 
-  insertMany: (orders) =>{
-    return Order.insertMany(orders);
+  insertMany: async (orders) =>{
+    return await Order.insertMany(orders);
   }
 }

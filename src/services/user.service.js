@@ -2,10 +2,11 @@ import { userRepository } from '../repositories/user.repository.js';
 import { USER_ROLES } from '../utils/constants.js';
 import { ERROR_CODES } from '../utils/errorDictionary.js';
 import { createError } from '../utils/apiResponse.js';
+import logger from '../config/logger.js';
 
 export const userService = {
     getUsers: async () => {
-        return userRepository.getAll();
+        return await userRepository.getAll();
     },
 
     getUserById: async (id) => {
@@ -38,7 +39,9 @@ export const userService = {
             throw createError(ERROR_CODES.USER_EXISTS_WITH_EMAIL);
         }
 
-        return userRepository.create({ firstName, lastName, email, password, role });
+        const userCreated = await userRepository.create({ firstName, lastName, email, password, role });
+        logger.info(`Se creó el usuario con id ${userCreated._id}`);
+        return userCreated;
     },
 
     updateUser: async (id, updates) => {
@@ -48,6 +51,7 @@ export const userService = {
             throw createError(ERROR_CODES.USER_NOT_FOUND);
         }
 
+        logger.info(`Se actualizó el usuario con id ${user._id}`);
         return user;
     },
 
@@ -58,6 +62,7 @@ export const userService = {
             throw createError(ERROR_CODES.USER_NOT_FOUND);
         }
 
+        logger.info(`Se eliminó el usuario con id ${user._id}`);
         return user;
     }
 };

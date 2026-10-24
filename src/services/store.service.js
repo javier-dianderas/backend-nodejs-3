@@ -3,6 +3,7 @@ import { userRepository } from '../repositories/user.repository.js';
 import { createError } from '../utils/apiResponse.js';
 import { ERROR_CODES } from '../utils/errorDictionary.js';
 import { USER_ROLES } from '../utils/constants.js';
+import logger from '../config/logger.js';
 
 export const storeService = {
   getStores: async () => {
@@ -36,7 +37,9 @@ export const storeService = {
       throw createError(ERROR_CODES.OWNER_MUST_BE_STORE_ROLE);
     }
 
-    return storeRepository.create(storeData);
+    const storeCreated = await storeRepository.create(storeData);
+    logger.info(`Se creó la ubicación con id ${storeCreated._id}`);
+    return storeCreated;
   },
 
   updateStore: async (id, storeData) => {
@@ -45,7 +48,7 @@ export const storeService = {
     if (!store) {
       throw createError(ERROR_CODES.STORAGE_NOT_FOUND);
     }
-
+    logger.info(`Se actualizó la ubicación con id ${store._id}`);
     return store;
   },
 
@@ -55,7 +58,7 @@ export const storeService = {
     if (!store) {
       throw createError(ERROR_CODES.STORAGE_NOT_FOUND);
     }
-
+    logger.info(`Se eliminó la ubicación con id ${store._id}`);
     return store;
   },
 };

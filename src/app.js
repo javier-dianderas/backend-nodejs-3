@@ -22,10 +22,10 @@ app.use('/api/users', usersRouter);
 app.use('/api/orders', ordersRouter);
 app.use('/api/deliveries', deliveriesRouter);
 app.use('/api/stores', storesRouter);
-app.use('/api/logger', loggerRouter);
 
 if(config.nodeEnv !== "production") {
     app.use("/api/mocks", mocksRouter);
+    app.use('/api/logger', loggerRouter);
 }
 
 app.get('/api/health', (req, res) => {

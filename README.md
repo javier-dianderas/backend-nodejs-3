@@ -118,6 +118,78 @@ El resto de la aplicación utiliza el objeto de configuración exportado por est
 
 El repositorio incluye un archivo `.env.example` con las variables necesarias y valores ficticios, sin exponer las credenciales reales utilizadas por la aplicación.
 
+## Logging y monitoreo
+
+La aplicación utiliza **Winston** como sistema centralizado de logging para registrar eventos relevantes durante la ejecución de ShipNow API. Esto permite identificar errores, realizar tareas de depuración y consultar el comportamiento interno de la aplicación.
+
+La configuración del logger se centraliza en `src/config/logger.js` y se reutiliza en los distintos módulos del proyecto.
+
+### Niveles de log
+
+Se utilizan seis niveles personalizados para clasificar los eventos según su importancia:
+
+| Nivel     | Prioridad | Uso                                                                                                        |
+| --------- | --------: | ---------------------------------------------------------------------------------------------------------- |
+| `fatal`   |         0 | Fallas críticas que comprometen el funcionamiento de la aplicación.                                        |
+| `error`   |         1 | Errores inesperados durante el procesamiento de solicitudes u operaciones internas.                        |
+| `warning` |         2 | Situaciones anómalas o errores esperados, como datos inválidos o recursos inexistentes.                    |
+| `info`    |         3 | Eventos relevantes, como el inicio del servidor, la conexión a MongoDB y la generación de datos de prueba. |
+| `http`    |         4 | Información relacionada con las solicitudes HTTP.                                                          |
+| `debug`   |         5 | Información detallada utilizada durante el desarrollo y la depuración.                                     |
+
+Los registros incluyen una marca de tiempo, el nivel correspondiente y un mensaje descriptivo.
+
+### Configuración por entorno
+
+El comportamiento del logger depende de la variable de entorno `NODE_ENV`.
+
+- **Desarrollo (`NODE_ENV=development`):** permite visualizar registros detallados, incluidos los de nivel `debug`, para facilitar la depuración.
+- **Producción (`NODE_ENV=production`):** restringe los mensajes mostrados en consola a los niveles más relevantes, comenzando por `info`.
+
+La configuración de los transportes determina qué niveles se escriben en consola y en los archivos de logs.
+
+### Persistencia y rotación de logs
+
+Los registros se almacenan en la carpeta `logs/` ubicada en la raíz del proyecto.
+
+La configuración contempla archivos separados para los registros generales y los errores, utilizando `winston-daily-rotate-file` para gestionar la rotación automática.
+
+Los archivos de errores contienen únicamente los niveles `error` y `fatal`, mientras que los registros generales permiten consultar otros eventos de la aplicación.
+
+La rotación permite organizar los registros por fecha, limitar el tamaño de los archivos y conservar un historial durante un período definido en la configuración del logger.
+
+Los archivos generados por la aplicación no deben subirse al repositorio.
+
+### Integración con la aplicación
+
+El logger se utiliza en puntos relevantes de ShipNow API, entre ellos:
+
+- Inicio del servidor y conexión a MongoDB.
+- Errores capturados por el middleware global de manejo de errores.
+- Validaciones y operaciones relacionadas con la generación de datos mock.
+- Operaciones importantes de creación, actualización y consulta de pedidos.
+- Situaciones en las que una ruta o un recurso solicitado no existe.
+
+El logging complementa el manejo centralizado de errores, pero no lo reemplaza. Las respuestas HTTP mantienen el formato establecido por la API.
+
+### Endpoint de prueba del logger
+
+Se dispone de un endpoint de prueba para verificar el funcionamiento de los niveles de logging.
+
+| Método | Ruta               | Descripción                                                  |
+| ------ | ------------------ | ------------------------------------------------------------ |
+| GET    | `/api/logger/test` | Genera registros de prueba de los seis niveles configurados. |
+
+Para probarlo, inicia la aplicación y realiza la siguiente solicitud:
+
+```http
+GET http://localhost:8080/api/logger/test
+```
+
+El endpoint genera mensajes de los niveles `debug`, `http`, `info`, `warning`, `error` y `fatal`, permitiendo comprobar su salida en consola y en los archivos correspondientes.
+
+Este endpoint es una herramienta de diagnóstico y no forma parte de las operaciones habituales del negocio. Debe restringirse o deshabilitarse en producción.
+
 ## Constantes
 
 Los valores inmutables del dominio, como los roles de usuario y los estados de productos, se encuentran centralizados en `src/constants/index.js`.
@@ -126,29 +198,30 @@ Esto evita utilizar strings directamente en diferentes partes de la aplicación 
 
 ## Endpoints
 
-| Método | Ruta                  | Descripción         |
-| ------ | --------------------- | ------------------- |
-| GET    | `/api/health`         | Health check        |
-| GET    | `/api/users`          | Listar usuarios     |
-| POST   | `/api/users`          | Crear usuario       |
-| GET    | `/api/users/:id`      | Obtener usuario     |
-| PUT    | `/api/users/:id`      | Actualizar usuario  |
-| DELETE | `/api/users/:id`      | Eliminar usuario    |
-| GET    | `/api/orders`         | Listar ordenes      |
-| POST   | `/api/orders`         | Crear orden         |
-| GET    | `/api/orders/:id`     | Obtener orden       |
-| PUT    | `/api/orders/:id`     | Actualizar orden    |
-| DELETE | `/api/orders/:id`     | Eliminar orden      |
-| GET    | `/api/deliveries`     | Listar entregas     |
-| POST   | `/api/deliveries`     | Crear entrega       |
-| GET    | `/api/deliveries/:id` | Obtener entrega     |
-| PUT    | `/api/deliveries/:id` | Actualizar entrega  |
-| DELETE | `/api/deliveries/:id` | Eliminar entrega    |
-| GET    | `/api/stores`         | Listar comercios    |
-| POST   | `/api/stores`         | Crear comercio      |
-| GET    | `/api/stores/:id`     | Obtener comercio    |
-| PUT    | `/api/stores/:id`     | Actualizar comercio |
-| DELETE | `/api/stores/:id`     | Eliminar comercio   |
+| Método | Ruta                  | Descripción                   |
+| ------ | --------------------- | ----------------------------- |
+| GET    | `/api/health`         | Health check                  |
+| GET    | `/api/users`          | Listar usuarios               |
+| POST   | `/api/users`          | Crear usuario                 |
+| GET    | `/api/users/:id`      | Obtener usuario               |
+| PUT    | `/api/users/:id`      | Actualizar usuario            |
+| DELETE | `/api/users/:id`      | Eliminar usuario              |
+| GET    | `/api/orders`         | Listar ordenes                |
+| POST   | `/api/orders`         | Crear orden                   |
+| GET    | `/api/orders/:id`     | Obtener orden                 |
+| PUT    | `/api/orders/:id`     | Actualizar orden              |
+| DELETE | `/api/orders/:id`     | Eliminar orden                |
+| GET    | `/api/deliveries`     | Listar entregas               |
+| POST   | `/api/deliveries`     | Crear entrega                 |
+| GET    | `/api/deliveries/:id` | Obtener entrega               |
+| PUT    | `/api/deliveries/:id` | Actualizar entrega            |
+| DELETE | `/api/deliveries/:id` | Eliminar entrega              |
+| GET    | `/api/stores`         | Listar comercios              |
+| POST   | `/api/stores`         | Crear comercio                |
+| GET    | `/api/stores/:id`     | Obtener comercio              |
+| PUT    | `/api/stores/:id`     | Actualizar comercio           |
+| DELETE | `/api/stores/:id`     | Eliminar comercio             |
+| GET    | `/api/logger/test`    | Prueba los niveles del logger |
 
 ### Mocks
 
@@ -197,6 +270,7 @@ Todas las respuestas siguen el mismo formato:
 
 | Comando       | Uso                                                   |
 | ------------- | ----------------------------------------------------- |
+| `npm install` | Instalar las dependencias del proyecto.               |
 | `npm run dev` | Ejecutar la aplicación en modo desarrollo con nodemon |
 | `npm start`   | Ejecutar la aplicación                                |
 
@@ -208,3 +282,6 @@ Todas las respuestas siguen el mismo formato:
 - Mongoose
 - dotenv
 - nodemon
+- Winston
+- winston-daily-rotate-file
+- Faker.js

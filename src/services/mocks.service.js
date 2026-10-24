@@ -10,6 +10,7 @@ import { USER_ROLES } from "../utils/constants.js";
 import { createError } from "../utils/apiResponse.js";
 import { ERROR_CODES } from "../utils/errorDictionary.js";
 import { MAX_MOCK_ITEMS, DEFAULT_MOCK_ITEMS } from "../utils/constants.js";
+import logger from "../config/logger.js";
 
 // qty puede llegar como texto (query string) o número (body)
 const validateQty = (qty = DEFAULT_MOCK_ITEMS) =>{
@@ -64,6 +65,8 @@ export const mockService = {
         const owners = createdUsers.filter(u => u.role === USER_ROLES.STORE);
         const ownersIds = owners.map(c => c._id);
         const createdStores = await storeRepository.insertMany(generateMockStores(validateQty(qty), ownersIds));
+
+        logger.info(`Se generó el seed de users (${createdUsers.length}), orders (${createdOrders.length}), deliveries (${createdDeliveries.length}), stores (${createdStores.length})`);
 
         return {
             users: createdUsers.length,

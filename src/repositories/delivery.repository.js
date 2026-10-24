@@ -2,31 +2,31 @@ import Delivery from "../models/delivery.model.js";
 
 export const deliveryRepository = {
 
-  getAll: (filter = {}) => {
-    return Delivery.find(filter)
+  getAll: async (filter = {}) => {
+    return await Delivery.find(filter)
       .populate('order')
       .populate('driver', 'firstName lastName email');
   },
 
-  getById: (id) => {
-    return Delivery.findById(id)
+  getById: async (id) => {
+    return await Delivery.findById(id)
       .populate('order')
       .populate('driver', 'firstName lastName email');
   },
 
-  create: (newDelivery) => {
-    return Delivery.create(newDelivery);
+  create: async (newDelivery) => {
+    return await Delivery.create(newDelivery);
   },
 
-  update: (id, updates) => {
-    return Delivery.findByIdAndUpdate(id, updates, { new: true });
+  update: async (id, updates) => {
+    return await Delivery.findByIdAndUpdate(id, updates, { new: true });
   },
 
-  delete: (id) => {
-    return Delivery.findByIdAndDelete(id);
+  delete: async (id) => {
+    return await Delivery.findByIdAndDelete(id);
   },
 
-  insertMany: (deliveries) =>{
-    return Delivery.insertMany(deliveries);
+  insertMany: async (deliveries) =>{
+    return await Delivery.insertMany(deliveries);
   }
 }

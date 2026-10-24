@@ -4,10 +4,11 @@ import { userRepository } from '../repositories/user.repository.js';
 import { USER_ROLES } from '../utils/constants.js';
 import { ERROR_CODES } from '../utils/errorDictionary.js';
 import { createError } from '../utils/apiResponse.js';
+import logger from '../config/logger.js';
 
 export const deliveryService = {
   getDeliveries: async () => {
-    return deliveryRepository.getAll();
+    return await deliveryRepository.getAll();
   },
 
   getDeliveryById: async (id) => {
@@ -36,7 +37,9 @@ export const deliveryService = {
       }
     }
 
-    return deliveryRepository.create(newDelivery);
+    const deliveryCreated = await deliveryRepository.create(newDelivery);
+    logger.info(`Se creó la entrega con id ${deliveryCreated._id}`);
+    return deliveryCreated;
   },
 
   updateDelivery: async (id, updates) => {
@@ -46,6 +49,7 @@ export const deliveryService = {
       throw createError(ERROR_CODES.DELIVERY_NOT_FOUND);
     }
 
+    logger.info(`Se actualizó la entrega con id ${delivery._id}`);
     return delivery;
   },
 
@@ -55,7 +59,7 @@ export const deliveryService = {
     if (!delivery) {
       throw createError(ERROR_CODES.DELIVERY_NOT_FOUND);
     }
-
+    logger.info(`Se eliminó la entrega con id ${delivery._id}`);
     return delivery;
   }
 };

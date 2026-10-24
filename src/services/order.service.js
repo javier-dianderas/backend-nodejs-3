@@ -4,6 +4,7 @@ import { config } from '../config/index.js';
 import { ORDER_STATUS, DELIVERY_PRIORITY } from '../utils/constants.js';
 import { createError } from '../utils/apiResponse.js';
 import { ERROR_CODES } from '../utils/errorDictionary.js';
+import logger from '../config/logger.js';
 
 // recibe todo por parámetro para poder testearla sin config ni DB
 export const calculateShippingCost = ({ isProduction, shipmentValue, apiKey }) => {
@@ -54,7 +55,7 @@ export const orderService = {
       apiKey: config.jwtSecret
     });
 
-    return orderRepository.create({
+    const orderCreated = await orderRepository.create({
       ...newOrder,
       declaredValue,
       shippingCost,
@@ -62,6 +63,8 @@ export const orderService = {
       status: ORDER_STATUS.CREATED,
       priority: newOrder.priority || DELIVERY_PRIORITY.NORMAL
     });
+    logger.info(`Se creó la orden con id ${orderCreated._id}`);
+    return orderCreated;
   },
 
   updateOrder: async (id, updates) => {
@@ -70,7 +73,7 @@ export const orderService = {
     if (!order) {
       throw createError(ERROR_CODES.ORDER_NOT_FOUND);
     }
-
+    logger.info(`Se actualizó la orden con id ${order._id}`);
     return order;
   },
 
@@ -80,7 +83,7 @@ export const orderService = {
     if (!order) {
       throw createError(ERROR_CODES.ORDER_NOT_FOUND);
     }
-
+    logger.info(`Se eliminó la orden con id ${order._id}`);
     return order;
   }
 };
