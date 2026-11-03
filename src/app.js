@@ -10,6 +10,8 @@ import { config } from './config/index.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { httpLogger } from './middlewares/httpLogger.js';
+import swaggerSpec from './config/swagger.js';
+import swaggerUi from "swagger-ui-express";
 
 const app = express();
 
@@ -22,6 +24,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/orders', ordersRouter);
 app.use('/api/deliveries', deliveriesRouter);
 app.use('/api/stores', storesRouter);
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 if(config.nodeEnv !== "production") {
     app.use("/api/mocks", mocksRouter);

@@ -13,7 +13,7 @@ export const getMockUsers = (req, res, next) => {
 export const getMockOrders = (req, res, next) => {
     try {
         const orders = mockService.getMockOrders(req.query.qty);
-        successResponse(res, { message: "Mock de ordenes", payload: orders });
+        successResponse(res, { message: "Mock de pedidos", payload: orders });
     } catch (error) {
         next(error);
     }

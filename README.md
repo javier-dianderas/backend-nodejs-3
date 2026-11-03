@@ -190,6 +190,53 @@ El endpoint genera mensajes de los niveles `debug`, `http`, `info`, `warning`, `
 
 Este endpoint es una herramienta de diagnóstico y no forma parte de las operaciones habituales del negocio. Debe restringirse o deshabilitarse en producción.
 
+## Documentación de API con Swagger
+
+ShipNow API utiliza **Swagger UI** y **OpenAPI 3.0** para documentar sus endpoints y facilitar la consulta y prueba de las operaciones disponibles.
+
+La documentación interactiva se encuentra disponible en la siguiente ruta:
+
+| Recurso    | URL                              |
+| ---------- | -------------------------------- |
+| Swagger UI | `http://localhost:8080/api/docs` |
+
+### ¿Cómo acceder a la documentación?
+
+1. Configurar las variables de entorno según las indicaciones de la sección **Instalación**.
+2. Iniciar el servidor utilizando `npm run dev`.
+3. Abrir `http://localhost:8080/api/docs` en el navegador.
+4. Seleccionar el módulo y endpoint que se desea consultar.
+5. Utilizar la opción **Try it out** para ejecutar solicitudes directamente desde Swagger UI.
+
+### Módulos documentados
+
+La documentación está organizada mediante tags para facilitar la navegación:
+
+| Módulo         | Descripción                                                                 |
+| -------------- | --------------------------------------------------------------------------- |
+| **Users**      | Operaciones de consulta, creación, actualización y eliminación de usuarios. |
+| **Orders**     | Operaciones relacionadas con la gestión de pedidos.                         |
+| **Deliveries** | Operaciones relacionadas con la gestión de entregas.                        |
+| **Stores**     | Operaciones relacionadas con la gestión de comercios.                       |
+| **Mocks**      | Generación de datos ficticios y carga de datos de prueba en MongoDB.        |
+| **Logger**     | Endpoint de validación de los niveles de logging configurados en Winston.   |
+
+### Schemas y respuestas
+
+Se utilizan schemas reutilizables para representar las principales entidades y estructuras de respuesta de la API:
+
+- **User:** estructura de los usuarios.
+- **Order:** estructura de los pedidos.
+- **Delivery:** estructura de las entregas.
+- **Store:** estructura de los comercios.
+- **OrderItem:** estructura de los productos incluidos en un pedido.
+- **SuccessResponse:** formato estándar de las respuestas exitosas.
+- **ErrorResponse:** formato estándar de las respuestas de error.
+
+Los endpoints documentan sus métodos HTTP, parámetros, cuerpos de solicitud cuando corresponda, respuestas exitosas y posibles errores.
+
+También se documentan los errores de validación, recursos no encontrados, errores internos y las validaciones específicas de los módulos de pedidos, entregas, comercios y mocks.
+
 ## Constantes
 
 Los valores inmutables del dominio, como los roles de usuario y los estados de productos, se encuentran centralizados en `src/constants/index.js`.
@@ -222,6 +269,7 @@ Esto evita utilizar strings directamente en diferentes partes de la aplicación 
 | PUT    | `/api/stores/:id`     | Actualizar comercio           |
 | DELETE | `/api/stores/:id`     | Eliminar comercio             |
 | GET    | `/api/logger/test`    | Prueba los niveles del logger |
+| GET    | `/api/docs`           | Documentación en swagger      |
 
 ### Mocks
 
@@ -285,3 +333,5 @@ Todas las respuestas siguen el mismo formato:
 - Winston
 - winston-daily-rotate-file
 - Faker.js
+- Swagger UI Express
+- swagger-jsdoc

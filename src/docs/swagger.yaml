@@ -1,0 +1,1633 @@
+tags:
+  - name: Orders
+    description: Gestión de pedidos
+  - name: Users
+    description: Gestión de usuarios
+  - name: Mocks
+    description: Generación de mocks
+  - name: Deliveries
+    description: Gestión de entregas
+  - name: Stores
+    description: Gestión de comercios
+  - name: Logger
+    description: Test del logger
+
+paths:
+  /api/mocks/users:
+    get:
+      tags: [Mocks]
+      summary: Listar datos de prueba de usuarios
+      description: Devuelve datos de usuarios ficticios
+      parameters:
+        - in: query
+          name: qty
+          required: false
+          description: Cantidad de entidades a generar
+          schema:
+            type: integer
+            example: 5
+      responses:
+        "200":
+          description: Mock de usuarios
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersMockResponse"
+        "400":
+          description: El parametro qty debe ser mayor a 0 y no puede superar un valor máximo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                InvalidMockQuantity:
+                  summary:
+                  value:
+                    status: error
+                    message: qty debe ser un número entero mayor a 0
+                    code: INVALID_MOCK_QUANTITY
+                InvalidMockQuantityMax:
+                  summary:
+                  value:
+                    status: error
+                    message: qty no puede superar 500
+                    code: INVALID_MOCK_QUANTITY_MAX
+
+  /api/mocks/orders:
+    get:
+      tags: [Mocks]
+      summary: Listar datos de prueba de pedidos
+      description: Devuelve datos de pedidos ficticios
+      parameters:
+        - in: query
+          name: qty
+          required: false
+          description: Cantidad de entidades a generar
+          schema:
+            type: integer
+            example: 5
+      responses:
+        "200":
+          description: Mock de pedidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrdersMockResponse"
+        "400":
+          description: El parametro qty debe ser mayor a 0 y no puede superar un valor máximo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                InvalidMockQuantity:
+                  summary:
+                  value:
+                    status: error
+                    message: qty debe ser un número entero mayor a 0
+                    code: INVALID_MOCK_QUANTITY
+                InvalidMockQuantityMax:
+                  summary:
+                  value:
+                    status: error
+                    message: qty no puede superar 500
+                    code: INVALID_MOCK_QUANTITY_MAX
+
+  /api/mocks/deliveries:
+    get:
+      tags: [Mocks]
+      summary: Listar datos de prueba de entregas
+      description: Devuelve datos de entregas ficticias
+      parameters:
+        - in: query
+          name: qty
+          required: false
+          description: Cantidad de entidades a generar
+          schema:
+            type: integer
+            example: 5
+      responses:
+        "200":
+          description: Mock de entregas
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveriesMockResponse"
+        "400":
+          description: El parametro qty debe ser mayor a 0 y no puede superar un valor máximo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                InvalidMockQuantity:
+                  summary:
+                  value:
+                    status: error
+                    message: qty debe ser un número entero mayor a 0
+                    code: INVALID_MOCK_QUANTITY
+                InvalidMockQuantityMax:
+                  summary:
+                  value:
+                    status: error
+                    message: qty no puede superar 500
+                    code: INVALID_MOCK_QUANTITY_MAX
+
+  /api/mocks/stores:
+    get:
+      tags: [Mocks]
+      summary: Listar datos de prueba de comercios
+      description: Devuelve datos de comercios ficticios
+      parameters:
+        - in: query
+          name: qty
+          required: false
+          description: Cantidad de entidades a generar
+          schema:
+            type: integer
+            example: 5
+      responses:
+        "200":
+          description: Mock de comercios
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StoresMockResponse"
+        "400":
+          description: El parametro qty debe ser mayor a 0 y no puede superar un valor máximo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                InvalidMockQuantity:
+                  summary:
+                  value:
+                    status: error
+                    message: qty debe ser un número entero mayor a 0
+                    code: INVALID_MOCK_QUANTITY
+                InvalidMockQuantityMax:
+                  summary:
+                  value:
+                    status: error
+                    message: qty no puede superar 500
+                    code: INVALID_MOCK_QUANTITY_MAX
+
+  /api/mocks/seed:
+    post:
+      tags: [Mocks]
+      summary: Generar datos de prueba
+      description: Guarda y devuelve datos de usuarios, pedidos, entregas, comercios
+      parameters:
+        - in: query
+          name: qty
+          required: false
+          description: Cantidad de entidades a generar
+          schema:
+            type: integer
+            example: 5
+      responses:
+        "200":
+          description: Mock de comercios
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeedMockResponse"
+        "400":
+          description: El parametro qty debe ser mayor a 0 y no puede superar un valor máximo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                InvalidMockQuantity:
+                  summary:
+                  value:
+                    status: error
+                    message: qty debe ser un número entero mayor a 0
+                    code: INVALID_MOCK_QUANTITY
+                InvalidMockQuantityMax:
+                  summary:
+                  value:
+                    status: error
+                    message: qty no puede superar 500
+                    code: INVALID_MOCK_QUANTITY_MAX
+
+  /api/deliveries:
+    get:
+      tags: [Deliveries]
+      summary: Listar entregas
+      description: Devuelve las entregas registradas
+      responses:
+        "200":
+          description: Lista de entregas obtenidas
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveriesReadResponse"
+    post:
+      tags: [Deliveries]
+      summary: Crear una entrega
+      description: Requiere order, driver, status, priority y assignedAt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeliveryRequest"
+      responses:
+        "201":
+          description: Entrega creada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveryResponse"
+        "404":
+          description: El pedido o el repartidor no fueron encontrados
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                OrderNotFound:
+                  summary:
+                  value:
+                    status: error
+                    message: Pedido no encontrado
+                    code: ORDER_NOT_FOUND
+                DriverNotFound:
+                  summary:
+                  value:
+                    status: error
+                    message: Repartidor no encontrado
+                    code: DRIVER_NOT_FOUND
+        "400":
+          description: El usuario no tiene el rol driver
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: El usuario no es driver
+                code: USER_IS_NOT_DRIVER
+
+  /api/deliveries/{id}:
+    get:
+      tags: [Deliveries]
+      summary: Obtener una entrega
+      description: Devuelve una entrega por el id enviado
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id de la entrega que queremos consultar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Entrega obtenida
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveryReadResponse"
+        "404":
+          description: No existe una entrega con ese id
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: Entrega no encontrada
+                code: DELIVERY_NOT_FOUND
+        "400":
+          description: El id no tiene el formato correcto
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: ID inválido
+                code: VALIDATION_ERROR
+    put:
+      tags: [Deliveries]
+      summary: Actualizar una entrega
+      description: Actualiza una entrega por el id. Se pueden actualizar los campos order, driver, status, priority, assignedAt
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id de la entrega que se quiere actualizar
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeliveryRequest"
+      responses:
+        "200":
+          description: Entrega actualizada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveryResponse"
+        "404":
+          description: No existe un usuario con ese id
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: Entrega no encontrada
+                code: DELIVERY_NOT_FOUND
+        "400":
+          description: El id no tiene el formato correcto
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: ID inválido
+                code: VALIDATION_ERROR
+    delete:
+      tags: [Deliveries]
+      summary: Elimina una entrega
+      description: Elimina una entrega por el id enviado
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id de la entrega que queremos eliminar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Entrega eliminada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveryResponse"
+        "404":
+          description: No existe un usuario con ese id
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: Entrega no encontrada
+                code: DELIVERY_NOT_FOUND
+        "400":
+          description: El id no tiene el formato correcto
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: ID inválido
+                code: VALIDATION_ERROR
+
+  /api/stores:
+    get:
+      tags: [Stores]
+      summary: Listar comercios
+      description: Devuelve los comercios registrados
+      responses:
+        "200":
+          description: Lista de comercios obtenidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StoresReadResponse"
+    post:
+      tags: [Stores]
+      summary: Crear un comercio
+      description: Requiere name, address, owner, isActive
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoreRequest"
+      responses:
+        "201":
+          description: Store creado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveryResponse"
+        "404":
+          description: El propietario no fue encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: Propietario no encontrado
+                code: OWNER_NOT_FOUND
+        "400":
+          description: El usuario no tiene el rol store
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: El propietario debe tener rol store
+                code: OWNER_MUST_BE_STORE_ROLE
+
+  /api/stores/{id}:
+    get:
+      tags: [Stores]
+      summary: Obtener un comercio
+      description: Devuelve un comercio por el id enviado
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id del comercio que queremos consultar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Comercio obtenido
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StoreReadResponse"
+        "404":
+          description: No existe un comercio con ese id
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: Comercio no encontrado
+                code: STORAGE_NOT_FOUND
+        "400":
+          description: El id no tiene el formato correcto
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: ID inválido
+                code: VALIDATION_ERROR
+    put:
+      tags: [Stores]
+      summary: Actualizar un comercio
+      description: Actualiza un comercio por el id. Se pueden actualizar los campos name, address, owner, isActive
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id del comercio que se quiere actualizar
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoreRequest"
+      responses:
+        "200":
+          description: Comercio actualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveryResponse"
+        "404":
+          description: No existe un comercio con ese id
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: Comercio no encontrado
+                code: STORAGE_NOT_FOUND
+        "400":
+          description: El id no tiene el formato correcto
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: ID inválido
+                code: VALIDATION_ERROR
+    delete:
+      tags: [Stores]
+      summary: Elimina un comercio
+      description: Elimina un comercio por el id enviado
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id de la entrega que queremos eliminar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Comercio eliminado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StoreResponse"
+        "404":
+          description: No existe un usuario con ese id
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: Comercio no encontrado
+                code: STORAGE_NOT_FOUND
+        "400":
+          description: El id no tiene el formato correcto
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: ID inválido
+                code: VALIDATION_ERROR
+
+  /api/users:
+    get:
+      tags: [Users]
+      summary: Listar usuarios
+      description: Devuelve los usuarios registrados
+      responses:
+        "200":
+          description: Lista de usuarios obtenidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersReadResponse"
+    post:
+      tags: [Users]
+      summary: Crear un usuario
+      description: Requiere firstName, lastName, email, password y role
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequest"
+      responses:
+        "201":
+          description: Usuario creado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "403":
+          description: No se puede crear un usuario admin
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: No se puede crear un usuario admin
+                code: FORBIDDEN_CREATE_ADMIN_ROLE
+        "400":
+          description: El usuario debe tener los datos obligatorios, el rol es inválido y existe un usuario con el email
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                ValidationError:
+                  summary:
+                  value:
+                    status: error
+                    message: Faltan campos obligatorios
+                    code: VALIDATION_ERROR
+                InvalidUserRol:
+                  summary:
+                  value:
+                    status: error
+                    message: Rol inválido
+                    code: INVALID_USER_ROLE
+                UserExistsWithEmail:
+                  summary:
+                  value:
+                    status: error
+                    message: Ya existe un usuario con ese email
+                    code: USER_EXISTS_WITH_EMAIL
+
+  /api/users/{id}:
+    get:
+      tags: [Users]
+      summary: Obtener un usuario
+      description: Devuelve un usuario por el id enviado
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id del usuario que queremos consultar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuario obtenido
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserReadResponse"
+        "404":
+          description: No existe un usuario con ese id
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: Usuario no encontrado
+                code: USER_NOT_FOUND
+        "400":
+          description: El id no tiene el formato correcto
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: ID inválido
+                code: VALIDATION_ERROR
+    put:
+      tags: [Users]
+      summary: Actualizar un usuario
+      description: Actualiza un usuario por el id. Se pueden actualizar los campos firstName, lastName, email, password, role
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id del usuario que se quiere actualizar
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequest"
+      responses:
+        "200":
+          description: Usuario actualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "404":
+          description: No existe un usuario con ese id
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: Usuario no encontrado
+                code: USER_NOT_FOUND
+        "400":
+          description: El id no tiene el formato correcto
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: ID inválido
+                code: VALIDATION_ERROR
+    delete:
+      tags: [Users]
+      summary: Elimina un usuario
+      description: Elimina un usuario por el id enviado
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id del usuario que queremos eliminar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuario eliminado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserReadResponse"
+        "404":
+          description: No existe un usuario con ese id
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: Usuario no encontrado
+                code: USER_NOT_FOUND
+        "400":
+          description: El id no tiene el formato correcto
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: ID inválido
+                code: VALIDATION_ERROR
+
+  /api/orders:
+    get:
+      tags: [Orders]
+      summary: Listar pedidos
+      description: Devuelve los pedidos registrados
+      responses:
+        "200":
+          description: Lista de pedidos obtenida
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrdersReadResponse"
+    post:
+      tags: [Orders]
+      summary: Crear un pedido
+      description: Requiere cliente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderInput"
+      responses:
+        "201":
+          description: Pedido creado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderResponse"
+        "404":
+          description: El pedido no existe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: El cliente especificado no existe
+                code: CUSTOMER_NOT_FOUND
+        "400":
+          description: El pedido debe tener al menos un item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: El pedido debe tener al menos un item
+                code: ORDER_MUST_HAVE_ONE_ITEM
+
+  /api/orders/{id}:
+    get:
+      tags: [Orders]
+      summary: Obtener un pedido
+      description: Devuelve un pedido por el id enviado
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id del pedido que queremos consultar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Orden obtenida
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderReadResponse"
+        "404":
+          description: No existe un pedido con ese id
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: Pedido no encontrado
+                code: ORDER_NOT_FOUND
+        "400":
+          description: El id no tiene el formato correcto
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: ID inválido
+                code: VALIDATION_ERROR
+    put:
+      tags: [Orders]
+      summary: Actualizar un pedido
+      description: Actualiza un pedido por el id. Se pueden actualizar los campos customer, items, deliveryAddress, total, shippingCost, declaredValue, status, priority
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id del pedido que se quiere actualizar
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderInput"
+      responses:
+        "200":
+          description: Orden actualizada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderResponse"
+        "404":
+          description: No existe un pedido con ese id
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: Pedido no encontrado
+                code: ORDER_NOT_FOUND
+        "400":
+          description: El id no tiene el formato correcto
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: ID inválido
+                code: VALIDATION_ERROR
+    delete:
+      tags: [Orders]
+      summary: Elimina un pedido
+      description: Elimina un pedido por el id enviado
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id del pedido que queremos eliminar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Orden eliminada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderReadResponse"
+        "404":
+          description: No existe un pedido con ese id
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: Pedido no encontrado
+                code: ORDER_NOT_FOUND
+        "400":
+          description: El id no tiene el formato correcto
+          content:
+            application/json::
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: ID inválido
+                code: VALIDATION_ERROR
+
+  /api/logger/test:
+    get:
+      tags: [Logger]
+      summary: Genera registros en el logger
+      description: Sirve para validar que el logger funciona correctamente
+      responses:
+        "200":
+          description: Genera un registro por cada tipo de mensaje en el logger
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoggerResponse"
+
+components:
+  schemas:
+    OrderItem:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Paquete grande
+        quantity:
+          type: number
+          exclusiveMinimum: true
+          minimum: 1
+          example: 2
+        price:
+          type: number
+          example: 21.1
+      required: [name, quantity, price]
+    Customer:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 6acc72a7d438e02332a08fd7
+        firstName:
+          type: string
+          example: Juan
+        lastName:
+          type: string
+          example: Perez
+        email:
+          type: string
+          example: alguien@gmail.com
+    OrderRead:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 6acc72a7d438e02332a08fd7
+        customer:
+          $ref: "#/components/schemas/Customer"
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItem"
+        deliveryAddress:
+          type: string
+          example: 6937 Zetta Crescent
+        total:
+          type: number
+          example: 63.30
+        shippingCost:
+          type: number
+          example: 0
+        declaredValue:
+          type: number
+          example: 0
+        status:
+          type: string
+          example: created
+        priority:
+          type: string
+          example: normal
+        delivery:
+          type: string
+          example:
+        createdAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.608Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.608Z
+    OrdersReadResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Listado de pedidos
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderRead"
+    OrderReadResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Orden obtenida
+        payload:
+          $ref: "#/components/schemas/OrderRead"
+    OrderInput:
+      type: object
+      properties:
+        customer:
+          type: string
+          description: Id de un usuario con rol customer
+          example: 6acc72a7d438e02332a08fe6
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItem"
+        deliveryAddress:
+          type: string
+          example: 999 Parkside
+        total:
+          type: number
+          example: 84.6
+        shippingCost:
+          type: number
+          example: 0
+        declaredValue:
+          type: number
+          example: 0
+        status:
+          type: string
+          enum: [created]
+          example: created
+        priority:
+          type: string
+          enum: [low, normal, high]
+          default: normal
+          example: low
+      required:
+        [
+          customer,
+          items,
+          deliveryAddress,
+          total,
+          shippingCost,
+          declaredValue,
+          status,
+        ]
+    Order:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 6ae90c38d2f27a2640c6d747
+        customer:
+          type: string
+          example: 6acc72a7d438e02332a08fe6
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItem"
+        deliveryAddress:
+          type: string
+          example: 999 Parkside
+        total:
+          type: number
+          example: 94.6
+        shippingCost:
+          type: number
+          example: 10
+        declaredValue:
+          type: number
+          example: 84.6
+        status:
+          type: string
+          example: created
+        priority:
+          type: string
+          example: normal
+        delivery:
+          type: string
+          example: 6acc72a7d438e02332a08fe1
+        createdAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.608Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.608Z
+    OrderResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Orden creada
+        payload:
+          $ref: "#/components/schemas/Order"
+    DeliveryRead:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 6acc72a7d438e02332a09001
+        order:
+          $ref: "#/components/schemas/OrderRead"
+        driver:
+          $ref: "#/components/schemas/UserRead"
+        status:
+          type: string
+          example: assigned
+        priority:
+          type: string
+          example: normal
+        assignedAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.608Z
+        deliveredAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.608Z
+        createdAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.608Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.608Z
+    DeliveriesReadResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Listado de entregas
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/DeliveryRead"
+    DeliveryReadResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Entrega obtenida
+        payload:
+          $ref: "#/components/schemas/DeliveryRead"
+    DeliveryRequest:
+      type: object
+      properties:
+        order:
+          type: string
+          example: 6acc72a7d438e02332a08ffa
+        driver:
+          type: string
+          example: 6acc72a7d438e02332a08fe5
+        status:
+          type: string
+          eum: [pending, assigned, in_transit, delivered]
+          default: pending
+          example: assigned
+        priority:
+          type: string
+          enum: [low, normal, high]
+          default: normal
+          example: normal
+        assignedAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.741Z
+      required: [order, status, priority]
+    Delivery:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 6acc72a7d438e02332a09001
+        order:
+          type: string
+          example: 6acc72a7d438e02332a08ffa
+        driver:
+          type: string
+          example: 6acc72a7d438e02332a08fe5
+        status:
+          type: string
+          example: assigned
+        priority:
+          type: string
+          example: normal
+        assignedAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.608Z
+        deliveredAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.608Z
+        createdAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.608Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.608Z
+    DeliveryResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Entrega creada
+        payload:
+          $ref: "#/components/schemas/Delivery"
+
+    StoreRead:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 6acc72a7d438e02332a09001
+        name:
+          type: string
+          example: Comercio Demo 1
+        address:
+          type: string
+          example: Av. Siempre Viva 701
+        owner:
+          type: string
+          example: 6ad2fd3735c7307a6c1ff334
+        isActive:
+          type: bool
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.608Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.608Z
+    StoresReadResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Lista de comercios
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/StoreRead"
+    StoreReadResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Comercio obtenido
+        payload:
+          $ref: "#/components/schemas/StoreRead"
+    StoreRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Comercio Demo 1
+        address:
+          type: string
+          example: Av. Siempre Viva 701
+        owner:
+          type: string
+          example: 6ad2fd3735c7307a6c1ff334
+        isActive:
+          type: bool
+          default: true
+          example: true
+      required: [name, address, owner]
+    Store:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 6acc72a7d438e02332a09001
+        name:
+          type: string
+          example: Comercio Demo 1
+        address:
+          type: string
+          example: Av. Siempre Viva 701
+        owner:
+          type: string
+          example: 6ad2fd3735c7307a6c1ff334
+        isActive:
+          type: bool
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.608Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.608Z
+    StoreResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Comercio creado
+        payload:
+          $ref: "#/components/schemas/Store"
+    UserRead:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 6acc72a7d438e02332a08fd7
+        firstName:
+          type: string
+          example: Devyn
+        lastName:
+          type: string
+          example: Bogisich
+        email:
+          type: string
+          example: devyn_bogisich.i6svw@shipnow.test
+        role:
+          type: string
+          example: customer
+        documents:
+          type: array
+        createdAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.608Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2026-10-12T05:39:51.608Z
+    UsersReadResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Listado de usuarios
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserRead"
+    UserReadResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Usuario obtenido
+        payload:
+          $ref: "#/components/schemas/UserRead"
+    UserRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          example: Juan
+        lastName:
+          type: string
+          example: Perez
+        email:
+          type: string
+          example: alguien@gmail.com
+        password:
+          type: string
+          example: Contr@$3nia
+        role:
+          type: string
+          enum: [customer, driver, store]
+          default: customer
+          example: customer
+      required: [firstName, lastName, email]
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 6ae93a069655c6b40f0cb252
+        firstName:
+          type: string
+          example: Juan
+        lastName:
+          type: string
+          example: Perez
+        email:
+          type: string
+          example: alguien@gmail.com
+        role:
+          type: string
+          example: customer
+        documents:
+          type: array
+        createdAt:
+          type: string
+          format: date-time
+          example: 2026-11-03T01:33:58.153Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2026-11-03T01:33:58.153Z
+    UserResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Usuario creado
+        payload:
+          $ref: "#/components/schemas/User"
+    UserMock:
+      type: object
+      properties:
+        firstName:
+          type: string
+          example: Juan
+        lastName:
+          type: string
+          example: Perez
+        email:
+          type: string
+          example: alguien@gmail.com
+        password:
+          type: string
+          example: Contr@s3nia
+        role:
+          type: string
+          example: customer
+    UsersMockResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Mock de usuarios
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserMock"
+    OrderMock:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItem"
+        deliveryAddress:
+          type: string
+          example: 999 Parkside
+        total:
+          type: number
+          example: 94.6
+        status:
+          type: string
+          example: created
+        priority:
+          type: string
+          example: normal
+    OrdersMockResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Mock de pedidos
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderMock"
+    DeliveryMock:
+      type: object
+      properties:
+        status:
+          type: string
+          example: assigned
+        priority:
+          type: string
+          example: normal
+        assignedAt:
+          type: string
+          format: date-time
+          example: 2026-11-03T03:47:13.304Z
+    DeliveriesMockResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Mock de entregas
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/DeliveryMock"
+    StoreMock:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Comercio Demo 1
+        address:
+          type: string
+          example: Av. Siempre Viva 701
+        isActive:
+          type: bool
+          example: true
+    StoresMockResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Mock de comercios
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/StoreMock"
+    SeedMock:
+      type: object
+      properties:
+        users:
+          type: number
+          example: 20
+        orders:
+          type: number
+          example: 20
+        deliveries:
+          type: number
+          example: 20
+        stores:
+          type: number
+          example: 20
+    SeedMockResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Seed de entidades
+        payload:
+          $ref: "#/components/schemas/SeedMock"
+    LoggerResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Logs generados correctamente
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+        code:
+          type: string
