@@ -50,7 +50,7 @@ paths:
                   summary:
                   value:
                     status: error
-                    message: qty no puede superar 500
+                    message: qty no puede superar 400
                     code: INVALID_MOCK_QUANTITY_MAX
 
   /api/mocks/orders:
@@ -90,7 +90,7 @@ paths:
                   summary:
                   value:
                     status: error
-                    message: qty no puede superar 500
+                    message: qty no puede superar 400
                     code: INVALID_MOCK_QUANTITY_MAX
 
   /api/mocks/deliveries:
@@ -130,7 +130,7 @@ paths:
                   summary:
                   value:
                     status: error
-                    message: qty no puede superar 500
+                    message: qty no puede superar 400
                     code: INVALID_MOCK_QUANTITY_MAX
 
   /api/mocks/stores:
@@ -170,7 +170,7 @@ paths:
                   summary:
                   value:
                     status: error
-                    message: qty no puede superar 500
+                    message: qty no puede superar 400
                     code: INVALID_MOCK_QUANTITY_MAX
 
   /api/mocks/seed:
@@ -210,7 +210,7 @@ paths:
                   summary:
                   value:
                     status: error
-                    message: qty no puede superar 500
+                    message: qty no puede superar 400
                     code: INVALID_MOCK_QUANTITY_MAX
 
   /api/deliveries:
@@ -294,7 +294,7 @@ paths:
         "404":
           description: No existe una entrega con ese id
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -304,7 +304,7 @@ paths:
         "400":
           description: El id no tiene el formato correcto
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -338,7 +338,7 @@ paths:
         "404":
           description: No existe un usuario con ese id
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -348,7 +348,7 @@ paths:
         "400":
           description: El id no tiene el formato correcto
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -376,7 +376,7 @@ paths:
         "404":
           description: No existe un usuario con ese id
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -386,7 +386,7 @@ paths:
         "400":
           description: El id no tiene el formato correcto
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -466,7 +466,7 @@ paths:
         "404":
           description: No existe un comercio con ese id
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -476,7 +476,7 @@ paths:
         "400":
           description: El id no tiene el formato correcto
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -510,7 +510,7 @@ paths:
         "404":
           description: No existe un comercio con ese id
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -520,7 +520,7 @@ paths:
         "400":
           description: El id no tiene el formato correcto
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -548,7 +548,7 @@ paths:
         "404":
           description: No existe un usuario con ese id
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -558,7 +558,7 @@ paths:
         "400":
           description: El id no tiene el formato correcto
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -653,7 +653,7 @@ paths:
         "404":
           description: No existe un usuario con ese id
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -663,7 +663,7 @@ paths:
         "400":
           description: El id no tiene el formato correcto
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -697,7 +697,7 @@ paths:
         "404":
           description: No existe un usuario con ese id
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -707,7 +707,7 @@ paths:
         "400":
           description: El id no tiene el formato correcto
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -735,7 +735,7 @@ paths:
         "404":
           description: No existe un usuario con ese id
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -745,7 +745,7 @@ paths:
         "400":
           description: El id no tiene el formato correcto
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -825,7 +825,7 @@ paths:
         "404":
           description: No existe un pedido con ese id
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -835,7 +835,7 @@ paths:
         "400":
           description: El id no tiene el formato correcto
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -869,7 +869,7 @@ paths:
         "404":
           description: No existe un pedido con ese id
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -879,7 +879,7 @@ paths:
         "400":
           description: El id no tiene el formato correcto
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -907,7 +907,7 @@ paths:
         "404":
           description: No existe un pedido con ese id
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
@@ -917,7 +917,7 @@ paths:
         "400":
           description: El id no tiene el formato correcto
           content:
-            application/json::
+            application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
               example:

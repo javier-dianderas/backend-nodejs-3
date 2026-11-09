@@ -283,7 +283,7 @@ Herramientas de desarrollo para tener datos con los que probar la API. Los usuar
 | GET    | `/api/mocks/stores?qty=10`     | Devuelve comercios falsos. **No** los guarda                                       |
 | POST   | `/api/mocks/seed?qty=10`       | Genera usuarios, ordenes, entregas y comercios falsos y los **inserta** en MongoDB |
 
-- `qty` llega por query string. En `seed` también se acepta en el body (`{ "qty": 10 }`); si vienen los dos, gana el query.
+- `qty` llega por query string. En `seed` también se acepta en el body (`{ "qty": 10 }`); si vienen los dos, se usa el query.
 - Sin `qty` se usan 10.
 - `qty` tiene que ser un entero entre 0 y 400. En `seed` tiene que ser mayor a 0, porque insertar 0 usuarios no tiene sentido.
 - Los usuarios generados son `customer` o `driver` (3 a 1, porque los pedidos necesitan clientes), nunca `admin`, y todos tienen la contraseña `coder123!`.
