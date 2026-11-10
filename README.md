@@ -257,7 +257,7 @@ Se utilizan las siguientes herramientas para implementar las pruebas:
 
 El entorno de testing se encuentra separado del entorno de desarrollo para evitar que las pruebas modifiquen información utilizada por la aplicación.
 
-Se utiliza un archivo `.env.test` para definir las variables de entorno específicas de las pruebas.
+Se tiene que crear el archivo `.env.test` para definir las variables de entorno específicas de las pruebas. Este archivo debe estar en la raiz del proyecto junto con `.env` y `.env.example`.
 
 Ejemplo:
 
