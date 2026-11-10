@@ -3,5 +3,7 @@ npm-debug.log*
 .DS_Store
 docs-clase
 .env
+.env.*
+!.env.example
 logs/
 *.log
