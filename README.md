@@ -237,6 +237,107 @@ Los endpoints documentan sus métodos HTTP, parámetros, cuerpos de solicitud cu
 
 También se documentan los errores de validación, recursos no encontrados, errores internos y las validaciones específicas de los módulos de pedidos, entregas, comercios y mocks.
 
+## Testing funcional
+
+El proyecto incorpora una suite de pruebas funcionales automatizadas para validar los principales endpoints de ShipNow API.
+
+Las pruebas permiten verificar tanto los escenarios exitosos como los errores esperados, comprobando los códigos HTTP, la estructura de las respuestas y las propiedades importantes de cada recurso.
+
+### Herramientas utilizadas
+
+Se utilizan las siguientes herramientas para implementar las pruebas:
+
+| Herramienta   | Descripción                                                                                                 |
+| ------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Mocha**     | Framework encargado de organizar y ejecutar los casos de prueba.                                            |
+| **Chai**      | Librería utilizada para realizar las aserciones y validar los resultados.                                   |
+| **Supertest** | Permite realizar solicitudes HTTP a la aplicación Express sin necesidad de iniciar manualmente un servidor. |
+
+### Configuración del entorno de testing
+
+El entorno de testing se encuentra separado del entorno de desarrollo para evitar que las pruebas modifiquen información utilizada por la aplicación.
+
+Se utiliza un archivo `.env.test` para definir las variables de entorno específicas de las pruebas.
+
+Ejemplo:
+
+```env
+NODE_ENV=test
+PORT=8081
+MONGODB_URI=mongodb://localhost:27017/shipnow-test
+JWT_SECRET=test_jwt_secret
+SHIPPING_API_KEY=test_shipping_api_key
+LOGGER_LEVEL=info
+```
+
+La variable `MONGODB_URI` apunta a una base de datos independiente (`shipnow-test`), evitando que las operaciones realizadas durante las pruebas afecten los datos del entorno de desarrollo.
+
+Las variables `JWT_SECRET` y `SHIPPING_API_KEY` utilizan valores ficticios, ya que las pruebas no deben depender de credenciales reales.
+
+> **Importante:** Para ejecutar las pruebas se requiere una instancia de MongoDB accesible y configurada con la base de datos de testing.
+
+### Ejecución de las pruebas
+
+Para ejecutar la suite completa desde la raíz del proyecto:
+
+```bash
+npm run test
+```
+
+El comando ejecuta los casos de prueba definidos en la carpeta `tests/`.
+
+Las pruebas utilizan la aplicación Express exportada desde `src/app.js`, sin necesidad de levantar manualmente el servidor HTTP.
+
+### Organización de las pruebas
+
+Los tests se encuentran organizados en la carpeta `tests/`, agrupados por recurso o módulo para facilitar su mantenimiento.
+
+```text
+tests/
+├── delivery.test.js
+├── logger.test.js
+├── middleware.test.js
+├── mock.test.js
+├── order.test.js
+├── setup.js
+├── store.test.js
+├── swagger.test.js
+└── user.test.js
+```
+
+### Módulos y escenarios cubiertos
+
+La suite contempla los siguientes módulos y escenarios:
+
+| Módulo         | Escenarios exitosos                                                 | Escenarios de error                                                       |
+| -------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| **Users**      | Crear, actualizar, obtener por id, listar, eliminar.                | Validar errores cuando corresponda en todos los escenarios.               |
+| **Orders**     | Crear, actualizar, obtener por id, listar, eliminar.                | Validar errores cuando corresponda en todos los escenarios.               |
+| **Deliveries** | Crear, actualizar, obtener por id, listar, eliminar.                | Validar errores cuando corresponda en todos los escenarios.               |
+| **Stores**     | Crear, actualizar, obtener por id, listar, eliminar.                | Validar errores cuando corresponda en todos los escenarios.               |
+| **Mocks**      | Listar y generar usuarios, pedidos, entregas y comercios ficticios. | Cantidades inválidas, valores negativos o superiores al límite permitido. |
+| **Logger**     | Acceder al endpoint de prueba y verificar su respuesta.             | Validar que se registren los distintos tipos de mensajes en el log.       |
+| **Swagger**    | Acceder a la documentación interactiva.                             | Validar que responda la ruta de la documentación.                         |
+| **Middleware** | Validar el manejador de rutas inexistentes.                         |                                                                           |
+
+También se comprueban los errores de rutas inexistentes y las respuestas generadas por el middleware global de manejo de errores.
+
+Cada prueba valida el código HTTP y la estructura de la respuesta, incluyendo el estado, el mensaje y el código interno de error cuando corresponda.
+
+### Datos de prueba y limpieza
+
+Los datos utilizados durante las pruebas son controlados y descartables.
+
+Se generan o crean dentro del entorno de testing, evitando depender de registros previamente cargados de forma manual.
+
+Para garantizar que las pruebas sean repetibles:
+
+- Se utilizan datos ficticios para la creación de usuarios y pedidos.
+- Los recursos necesarios se crean durante la ejecución de las pruebas.
+- Las operaciones de limpieza se realizan exclusivamente sobre la base de datos de testing.
+
+De esta manera, la suite puede ejecutarse varias veces sin depender del estado previo de la base de datos ni afectar la información del entorno de desarrollo.
+
 ## Constantes
 
 Los valores inmutables del dominio, como los roles de usuario y los estados de productos, se encuentran centralizados en `src/constants/index.js`.
@@ -316,11 +417,12 @@ Todas las respuestas siguen el mismo formato:
 
 ## Scripts
 
-| Comando       | Uso                                                   |
-| ------------- | ----------------------------------------------------- |
-| `npm install` | Instalar las dependencias del proyecto.               |
-| `npm run dev` | Ejecutar la aplicación en modo desarrollo con nodemon |
-| `npm start`   | Ejecutar la aplicación                                |
+| Comando        | Uso                                                   |
+| -------------- | ----------------------------------------------------- |
+| `npm install`  | Instalar las dependencias del proyecto.               |
+| `npm run dev`  | Ejecutar la aplicación en modo desarrollo con nodemon |
+| `npm start`    | Ejecutar la aplicación                                |
+| `npm run test` | Ejecutar la suite de pruebas                          |
 
 ## Tecnologías utilizadas
 
@@ -335,3 +437,6 @@ Todas las respuestas siguen el mismo formato:
 - Faker.js
 - Swagger UI Express
 - swagger-jsdoc
+- Mocha
+- Chai
+- Supertest
