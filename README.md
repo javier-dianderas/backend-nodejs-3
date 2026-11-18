@@ -46,7 +46,9 @@ Los valores utilizados en `.env.example` son únicamente valores de ejemplo y no
 
 El archivo `.env` contiene la configuración local y posibles datos sensibles, por lo que no debe subirse al repositorio.
 
-5. Iniciar la aplicación en modo desarrollo:
+5. Crear la carpeta `uploads` en la raíz del proyecto.
+
+6. Iniciar la aplicación en modo desarrollo:
 
 ```bash
 npm run dev
