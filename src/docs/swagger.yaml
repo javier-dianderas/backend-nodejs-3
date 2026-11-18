@@ -753,6 +753,90 @@ paths:
                 message: ID inválido
                 code: VALIDATION_ERROR
 
+  /api/users/{id}/documents:
+    post:
+      tags: [Users]
+      summary: Agrega un documento asociado a un usuario
+      description: Se agrega el archivo enviado como bytes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id del usuario al cual se quiere asociar el documento
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: user_document
+                document:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Documento agregado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "400":
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                FileRequired:
+                  summary:
+                  value:
+                    status: error
+                    message: Debes adjuntar un archivo
+                    code: FILE_REQUIRED
+                InvalidDocumentType:
+                  summary:
+                  value:
+                    status: error
+                    message: Tipo de documento inválido
+                    code: INVALID_DOCUMENT_TYPE
+                InvalidUpload:
+                  summary:
+                  value:
+                    status: error
+                    message: Campo de archivo o cantidad no permitida
+                    code: INVALID_UPLOAD
+                UploadError:
+                  summary:
+                  value:
+                    status: error
+                    message: No se pudo guardar el archivo
+                    code: UPLOAD_ERROR
+        "404":
+          description: El usuario no fue encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: Usuario no encontrado
+                code: USER_NOT_FOUND
+        "413":
+          description: El archivo enviado supera el tamaño máximo permitido
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: El archivo supera el límite máximo
+                code: FILE_TOO_LARGE
+
   /api/orders:
     get:
       tags: [Orders]
@@ -925,6 +1009,90 @@ paths:
                 message: ID inválido
                 code: VALIDATION_ERROR
 
+  /api/orders/{id}/proof:
+    post:
+      tags: [Orders]
+      summary: Agrega una prueba de entrega asociadaa a un pedido
+      description: Se agrega el archivo enviado como bytes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id del pedido al cual se quiere asociar la prueba de entrega
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: delivery_proof
+                document:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Prueba agregada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderResponse"
+        "400":
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                FileRequired:
+                  summary:
+                  value:
+                    status: error
+                    message: Debes adjuntar un archivo
+                    code: FILE_REQUIRED
+                InvalidDocumentType:
+                  summary:
+                  value:
+                    status: error
+                    message: Tipo de documento inválido
+                    code: INVALID_DOCUMENT_TYPE
+                InvalidUpload:
+                  summary:
+                  value:
+                    status: error
+                    message: Campo de archivo o cantidad no permitida
+                    code: INVALID_UPLOAD
+                UploadError:
+                  summary:
+                  value:
+                    status: error
+                    message: No se pudo guardar el archivo
+                    code: UPLOAD_ERROR
+        "404":
+          description: El usuario no fue encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: Pedido no encontrado
+                code: ORDER_NOT_FOUND
+        "413":
+          description: El archivo enviado supera el tamaño máximo permitido
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                status: error
+                message: El archivo supera el límite máximo
+                code: FILE_TOO_LARGE
+
   /api/logger/test:
     get:
       tags: [Logger]
@@ -1003,6 +1171,8 @@ components:
         delivery:
           type: string
           example:
+        proof:
+          $ref: "#/components/schemas/File"
         createdAt:
           type: string
           format: date-time
@@ -1111,6 +1281,8 @@ components:
         delivery:
           type: string
           example: 6acc72a7d438e02332a08fe1
+        proof:
+          $ref: "#/components/schemas/File"
         createdAt:
           type: string
           format: date-time
@@ -1380,6 +1552,8 @@ components:
           example: customer
         documents:
           type: array
+          items:
+            $ref: "#/components/schemas/File"
         createdAt:
           type: string
           format: date-time
@@ -1453,6 +1627,8 @@ components:
           example: customer
         documents:
           type: array
+          items:
+            $ref: "#/components/schemas/File"
         createdAt:
           type: string
           format: date-time
@@ -1472,6 +1648,31 @@ components:
           example: Usuario creado
         payload:
           $ref: "#/components/schemas/User"
+    File:
+      type:
+      properties:
+        originalName:
+          type: string
+          example: 98880509_1223_SCALA2_DS_online.pdf
+        fileName:
+          type: string
+          example: 1794966357234-663100055.pdf
+        path:
+          type: string
+          example: uploads\\documents\\1794966357234-663100055.pdf
+        mimeType:
+          type: string
+          example: application/pdf
+        size:
+          type: string
+          example: 1460219
+        type:
+          type: string
+          example: user_document
+        uploadedAt:
+          type: string
+          format: date-time
+          example: 2026-11-18T01:45:57.376Z
     UserMock:
       type: object
       properties:

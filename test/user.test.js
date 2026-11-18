@@ -3,6 +3,9 @@ import request from "supertest";
 import app from "../src/app.js";
 import { describe, it } from "mocha";
 import { USER_ROLES } from "../src/utils/constants.js";
+import { fixtures } from "./helpers/fixtures.js";
+import path from "node:path";
+import fs from "node:fs";
 
 describe("user testing", () => {
 
@@ -124,6 +127,99 @@ describe("user testing", () => {
         expect(response.body.message).to.equal("Usuario no encontrado");
         expect(response.body.code).to.equal("USER_NOT_FOUND");
         
+    });
+
+    it("agregar documento al usuario - ok", async () => {
+        const type = "user_document";
+
+        const response = await request(app).post(`/api/users/${userId}/documents`)
+            .field("type", type)
+            .attach("document", fixtures.valido);
+
+        expect(response.statusCode).to.equal(200);
+        expect(response.body.status).to.equal("success");
+        expect(response.body.payload).to.have.property("_id");
+        expect(response.body.payload).to.have.property("updatedAt");
+        expect(response.body.payload.documents).to.be.an("array").that.is.not.empty;
+
+        const document = response.body.payload.documents.at(-1);
+
+        expect(document).to.have.property("originalName");
+        expect(document).to.have.property("fileName");
+        expect(document).to.have.property("path");
+        expect(document).to.have.property("mimeType");
+        expect(document).to.have.property("size");
+        expect(document).to.have.property("type");
+        expect(document).to.have.property("uploadedAt");
+
+        expect(document.type).to.equal(type);
+        const filePath = path.resolve(document.path);
+        expect(fs.existsSync(filePath)).to.be.true;
+    });
+
+    it("agregar documento al usuario - file required", async () => {
+        const type = "user_document";
+
+        const response = await request(app).post(`/api/users/${userId}/documents`)
+            .field("type", type);
+
+        expect(response.statusCode).to.equal(400);
+        expect(response.body.status).to.equal("error");
+        expect(response.body.message).to.equal("Debes adjuntar un archivo");
+        expect(response.body.code).to.equal("FILE_REQUIRED");
+    });
+
+    it("agregar documento al usuario - invalid document type", async () => {
+        const type = "user_documents";
+
+        const response = await request(app).post(`/api/users/${userId}/documents`)
+            .field("type", type)
+            .attach("document", fixtures.valido);
+
+        expect(response.statusCode).to.equal(400);
+        expect(response.body.status).to.equal("error");
+        expect(response.body.message).to.equal("Tipo de documento inválido");
+        expect(response.body.code).to.equal("INVALID_DOCUMENT_TYPE");
+    });
+
+    it("agregar documento al usuario - invalid upload", async () => {
+        const type = "user_document";
+
+        const response = await request(app).post(`/api/users/${userId}/documents`)
+            .field("type", type)
+            .attach("document", fixtures.valido)
+            .attach("document", fixtures.valido);
+
+        expect(response.statusCode).to.equal(400);
+        expect(response.body.status).to.equal("error");
+        expect(response.body.message).to.equal("Campo de archivo o cantidad no permitida");
+        expect(response.body.code).to.equal("INVALID_UPLOAD");
+    });
+
+    it("agregar documento al usuario - user not found", async () => {
+        const type = "user_document";
+
+        const response = await request(app).post(`/api/users/6ac57194720a3c2665d1b475/documents`)
+            .field("type", type)
+            .attach("document", fixtures.valido);
+
+        expect(response.statusCode).to.equal(404);
+        expect(response.body.status).to.equal("error");
+        expect(response.body.message).to.equal("Usuario no encontrado");
+        expect(response.body.code).to.equal("USER_NOT_FOUND");
+    });
+
+    it("agregar documento al usuario - file too large", async () => {
+        const type = "user_document";
+
+        const response = await request(app).post(`/api/users/${userId}/documents`)
+            .field("type", type)
+            .attach("document", fixtures.tamanioInvalido);
+
+        expect(response.statusCode).to.equal(413);
+        expect(response.body.status).to.equal("error");
+        expect(response.body.message).to.equal("El archivo supera el límite máximo");
+        expect(response.body.code).to.equal("FILE_TOO_LARGE");
     });
 
     it("obtener user por id - ok", async () => {

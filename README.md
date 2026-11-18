@@ -346,31 +346,33 @@ Esto evita utilizar strings directamente en diferentes partes de la aplicación 
 
 ## Endpoints
 
-| Método | Ruta                  | Descripción                   |
-| ------ | --------------------- | ----------------------------- |
-| GET    | `/api/health`         | Health check                  |
-| GET    | `/api/users`          | Listar usuarios               |
-| POST   | `/api/users`          | Crear usuario                 |
-| GET    | `/api/users/:id`      | Obtener usuario               |
-| PUT    | `/api/users/:id`      | Actualizar usuario            |
-| DELETE | `/api/users/:id`      | Eliminar usuario              |
-| GET    | `/api/orders`         | Listar ordenes                |
-| POST   | `/api/orders`         | Crear orden                   |
-| GET    | `/api/orders/:id`     | Obtener orden                 |
-| PUT    | `/api/orders/:id`     | Actualizar orden              |
-| DELETE | `/api/orders/:id`     | Eliminar orden                |
-| GET    | `/api/deliveries`     | Listar entregas               |
-| POST   | `/api/deliveries`     | Crear entrega                 |
-| GET    | `/api/deliveries/:id` | Obtener entrega               |
-| PUT    | `/api/deliveries/:id` | Actualizar entrega            |
-| DELETE | `/api/deliveries/:id` | Eliminar entrega              |
-| GET    | `/api/stores`         | Listar comercios              |
-| POST   | `/api/stores`         | Crear comercio                |
-| GET    | `/api/stores/:id`     | Obtener comercio              |
-| PUT    | `/api/stores/:id`     | Actualizar comercio           |
-| DELETE | `/api/stores/:id`     | Eliminar comercio             |
-| GET    | `/api/logger/test`    | Prueba los niveles del logger |
-| GET    | `/api/docs`           | Documentación en swagger      |
+| Método | Ruta                       | Descripción                                   |
+| ------ | -------------------------- | --------------------------------------------- |
+| GET    | `/api/health`              | Health check                                  |
+| GET    | `/api/users`               | Listar usuarios                               |
+| POST   | `/api/users`               | Crear usuario                                 |
+| GET    | `/api/users/:id`           | Obtener usuario                               |
+| PUT    | `/api/users/:id`           | Actualizar usuario                            |
+| POST   | `/api/users/:id/documents` | Agregar documento asociado al usuario         |
+| DELETE | `/api/users/:id`           | Eliminar usuario                              |
+| GET    | `/api/orders`              | Listar ordenes                                |
+| POST   | `/api/orders`              | Crear orden                                   |
+| GET    | `/api/orders/:id`          | Obtener orden                                 |
+| PUT    | `/api/orders/:id`          | Actualizar orden                              |
+| POST   | `/api/orders/:id/proof`    | Agregar prueba de entrega asociada a la orden |
+| DELETE | `/api/orders/:id`          | Eliminar orden                                |
+| GET    | `/api/deliveries`          | Listar entregas                               |
+| POST   | `/api/deliveries`          | Crear entrega                                 |
+| GET    | `/api/deliveries/:id`      | Obtener entrega                               |
+| PUT    | `/api/deliveries/:id`      | Actualizar entrega                            |
+| DELETE | `/api/deliveries/:id`      | Eliminar entrega                              |
+| GET    | `/api/stores`              | Listar comercios                              |
+| POST   | `/api/stores`              | Crear comercio                                |
+| GET    | `/api/stores/:id`          | Obtener comercio                              |
+| PUT    | `/api/stores/:id`          | Actualizar comercio                           |
+| DELETE | `/api/stores/:id`          | Eliminar comercio                             |
+| GET    | `/api/logger/test`         | Prueba los niveles del logger                 |
+| GET    | `/api/docs`                | Documentación en swagger                      |
 
 ### Mocks
 
@@ -440,3 +442,4 @@ Todas las respuestas siguen el mismo formato:
 - Mocha
 - Chai
 - Supertest
+- Multer

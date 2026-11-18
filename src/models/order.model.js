@@ -1,6 +1,42 @@
 import mongoose from 'mongoose';
 import { ORDER_STATUS, DELIVERY_PRIORITY } from '../utils/constants.js';
 
+const proofSchema = new mongoose.Schema(
+  {
+    originalName: {
+      type: String,
+      required: true
+    },
+    fileName: {
+      type: String,
+      required: true
+    },
+    path: {
+      type: String,
+      required: true
+    },
+    mimeType: {
+      type: String,
+      required: true
+    },
+    size: {
+      type: Number,
+      required: true
+    },
+    type: {
+      type: String,
+      required: true
+    },
+    uploadedAt: {
+      type: Date,
+      default: Date.now
+    }
+  },
+  {
+    _id: false
+  }
+);
+
 const orderItemSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -60,6 +96,10 @@ const orderSchema = new mongoose.Schema({
   delivery: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Delivery',
+    default: null
+  },
+  proof: {
+    type: proofSchema,
     default: null
   }
 }, {

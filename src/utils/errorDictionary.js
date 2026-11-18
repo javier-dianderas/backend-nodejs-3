@@ -19,7 +19,13 @@ export const ERROR_CODES = {
     INVALID_MOCK_QUANTITY_MAX: "INVALID_MOCK_QUANTITY_MAX",
     STORAGE_NOT_FOUND: "STORAGE_NOT_FOUND",
     OWNER_NOT_FOUND: "OWNER_NOT_FOUND",
-    OWNER_MUST_BE_STORE_ROLE: "OWNER_MUST_BE_STORE_ROLE"
+    OWNER_MUST_BE_STORE_ROLE: "OWNER_MUST_BE_STORE_ROLE",
+    FILE_REQUIRED: "FILE_REQUIRED",
+    INVALID_DOCUMENT_TYPE: "INVALID_DOCUMENT_TYPE",
+    INVALID_FILE_TYPE: "INVALID_FILE_TYPE",
+    FILE_TOO_LARGE: "FILE_TOO_LARGE",    
+    UPLOAD_ERROR: "UPLOAD_ERROR",
+    INVALID_UPLOAD: "INVALID_UPLOAD"
 }
 
 export const ERROR_DICTIONARY = {
@@ -98,5 +104,29 @@ export const ERROR_DICTIONARY = {
     "OWNER_MUST_BE_STORE_ROLE": {
         statusCode: 400,
         message: "El propietario debe tener rol store"
+    },
+    "FILE_REQUIRED": {
+        statusCode: 400,
+        message: "Debes adjuntar un archivo"
+    },
+    "INVALID_DOCUMENT_TYPE": {
+        statusCode: 400,
+        message: "Tipo de documento inválido"
+    },
+    "INVALID_FILE_TYPE": {
+        statusCode: 400,
+        message: "Solo se permiten archivos PDF"
+    },
+    "FILE_TOO_LARGE": {
+        statusCode: 413,
+        message: "El archivo supera el límite máximo"
+    },
+    "UPLOAD_ERROR": {
+        statusCode: 400,
+        message: "No se pudo guardar el archivo"
+    },
+    "INVALID_UPLOAD": {
+        statusCode: 400,
+        message: "Campo de archivo o cantidad no permitida"
     }
 }

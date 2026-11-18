@@ -1,5 +1,5 @@
 import { userRepository } from '../repositories/user.repository.js';
-import { USER_ROLES } from '../utils/constants.js';
+import { DOCUMENT_TYPES, USER_ROLES } from '../utils/constants.js';
 import { ERROR_CODES } from '../utils/errorDictionary.js';
 import { createError } from '../utils/apiResponse.js';
 import logger from '../config/logger.js';
@@ -64,5 +64,33 @@ export const userService = {
 
         logger.info(`Se eliminó el usuario con id ${user._id}`);
         return user;
+    },
+
+    addDocument: async(id, file, type) => {
+        if(!file) {
+            throw createError(ERROR_CODES.FILE_REQUIRED);
+        }
+
+        if(type !== DOCUMENT_TYPES.USER_DOCUMENT) {
+            throw createError(ERROR_CODES.INVALID_DOCUMENT_TYPE);
+        }
+
+        const user = await userRepository.getById(id);
+        if(!user) {
+            throw createError(ERROR_CODES.USER_NOT_FOUND);
+        }
+
+        const document = {
+            originalName: file.originalname,
+            fileName: file.filename,
+            path: file.path,
+            mimeType: file.mimetype,
+            size: file.size,
+            type
+        };
+
+        const documents = [...user.documents, document];
+        const updatedUser = await userRepository.update(id, { documents });
+        return updatedUser;
     }
 };

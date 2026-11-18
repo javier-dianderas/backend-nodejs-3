@@ -1,5 +1,6 @@
 import { orderService } from '../services/order.service.js';
 import { successResponse } from '../utils/apiResponse.js';
+import { unlink } from "node:fs/promises";
 
 export const getOrders = async (req, res, next) => {
   try {
@@ -45,3 +46,25 @@ export const deleteOrder = async (req, res, next) => {
     next(error);
   }
 };
+
+export const uploadOrderProof = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const type = req.body.type;
+    const file = req.file;
+
+    const order = await orderService.addProof(id, file, type);
+
+    successResponse(res, {
+      statusCode: 200,
+      message: "Prueba agregada correctamente",
+      payload: order
+    });
+
+  } catch (error) {
+    if(req.file) {
+      await unlink(req.file.path);
+    }
+    next(error);
+  }
+}

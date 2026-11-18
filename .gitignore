@@ -7,3 +7,11 @@ docs-clase
 !.env.example
 logs/
 *.log
+uploads/*
+!uploads/.gitkeep
+!uploads/documents
+!uploads/documents/.gitkeep
+!uploads/proofs
+!uploads/proofs/.gitkeep
+!uploads/licenses
+!uploads/licenses/.gitkeep

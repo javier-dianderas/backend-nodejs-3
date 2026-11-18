@@ -1,5 +1,6 @@
 import { userService } from '../services/user.service.js';
 import { successResponse } from '../utils/apiResponse.js';
+import { unlink } from "node:fs/promises";
 
 export const getUsers = async (req, res, next) => {
     try {
@@ -45,3 +46,25 @@ export const deleteUser = async (req, res, next) => {
         next(error);
     }
 };
+
+export const uploadUserDocument = async (req, res, next) => {
+    try {
+        
+        const id = req.params.id;
+        const type = req.body.type;
+        const file = req.file;
+
+        const user = await userService.addDocument(id, file, type);
+
+        successResponse(res, {
+            statusCode: 200,
+            message: "Documento agregado correctamente",
+            payload: user
+        });
+    } catch (error) {
+        if(req.file) {
+            await unlink(req.file.path);
+        }
+        next(error);
+    }
+}

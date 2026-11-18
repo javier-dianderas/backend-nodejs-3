@@ -1,7 +1,7 @@
 import { orderRepository } from '../repositories/order.repository.js';
 import { userRepository } from '../repositories/user.repository.js';
 import { config } from '../config/index.js';
-import { ORDER_STATUS, DELIVERY_PRIORITY } from '../utils/constants.js';
+import { ORDER_STATUS, DELIVERY_PRIORITY, DOCUMENT_TYPES } from '../utils/constants.js';
 import { createError } from '../utils/apiResponse.js';
 import { ERROR_CODES } from '../utils/errorDictionary.js';
 import logger from '../config/logger.js';
@@ -85,5 +85,33 @@ export const orderService = {
     }
     logger.info(`Se eliminó la orden con id ${order._id}`);
     return order;
+  },
+
+  addProof: async(id, file, type) => {
+    if(!file) {
+      throw createError(ERROR_CODES.FILE_REQUIRED);
+    }
+
+    if(type !== DOCUMENT_TYPES.DELIVERY_PROOF) {
+      throw createError(ERROR_CODES.INVALID_DOCUMENT_TYPE);
+    }
+
+    const order = await orderRepository.getById(id);
+
+    if (!order) {      
+      throw createError(ERROR_CODES.ORDER_NOT_FOUND);
+    }
+
+    const proof = {
+      originalName: file.originalname,
+      fileName: file.filename,
+      path: file.path,
+      mimeType: file.mimetype,
+      size: file.size,
+      type
+    }
+
+    const proofCreated = await orderRepository.update(id, { proof });
+    return proofCreated;
   }
 };
